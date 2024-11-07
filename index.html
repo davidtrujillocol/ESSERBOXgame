@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas"></canvas>
+
+    <script>
+        // Initialize the game
+        var myGamePiece;
+
+        function startGame() {
+            myGamePiece = new component(30, 30, "red", 10, 120);
+            myGameArea.start();
+        }
+
+        // Create the game area
+        var myGameArea = {
+            canvas: document.getElementById("myCanvas"),
+            start: function () {
+                this.canvas.width = 480;
+                this.canvas.height = 270;
+                this.context = this.canvas.getContext("2d");
+                document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+                this.frameNo = 0;
+                this.interval = setInterval(updateGameArea, 20);
+            },
+            clear: function () {
+                this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            }
+        };
+
+        // Define the game component (in this case, a red square)
+        function component(width, height, color, x, y) {
+            this.width = width;
+            this.height = height;
+            this.x = x;
+            this.y = y;
+            this.update = function () {
+                // Update component properties here
+            };
+            this.newPos = function () {
+                // Calculate new position here
+            };
+            this.draw = function () {
+                var ctx = myGameArea.context;
+                ctx.fillStyle = color;
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+            };
+        }
+
+        // Add event listeners for arrow keys to move the red square
+        window.addEventListener("keydown", function (e) {
+            switch (e.key) {
+                case "ArrowUp":
+                    myGamePiece.y -= 5;
+                    break;
+                case "ArrowDown":
+                    myGamePiece.y += 5;
+                    break;
+                case "ArrowLeft":
+                    myGamePiece.x -= 5;
+                    break;
+                case "ArrowRight":
+                    myGamePiece.x += 5;
+                    break;
+            }
+        });
+
+        // Update the game area
+        function updateGameArea() {
+            myGameArea.clear();
+            myGamePiece.update();
+            myGamePiece.newPos();
+            myGamePiece.draw();
+        }
+
+        // Start theame
+        startGame();
+    </script>
+</body>
+</html>
